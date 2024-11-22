@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
-import './index.css'
+import Shopper from './Shopper';
+
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App/>
+    <Shopper/>
   </React.StrictMode>
 );
