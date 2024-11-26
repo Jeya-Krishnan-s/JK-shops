@@ -1,55 +1,93 @@
-import React from "react";
+import React, { useState } from "react";
+import { AiOutlineShoppingCart } from "react-icons/ai";
 
-function Cart({ cartItems }) {
-  // Group cart items by title
-  const groupedItems = {};
-  cartItems.forEach((item) => {
-    if (!groupedItems[item.title]) {
-      groupedItems[item.title] = {
-        ...item,
-        quantity: 1,
-      };
-    } else {
-      groupedItems[item.title].quantity += 1;
-    }
-  });
+const Cart = () => {
+  const [cart, setCart] = useState([]);
+  const [isCartVisible, setCartVisible] = useState(false);
 
-  // Convert grouped items back to array
-  const uniqueItems = Object.values(groupedItems);
+  // Add product to cart
+  const addToCart = (product) => {
+    setCart((prevCart) => {
+      const existingProduct = prevCart.find((item) => item.id === product.id);
+      if (existingProduct) {
+        return prevCart.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      }
+      return [...prevCart, { ...product, quantity: 1 }];
+    });
+  };
+
+  // Remove product from cart
+  const removeFromCart = (productId) => {
+    setCart((prevCart) =>
+      prevCart
+        .map((item) =>
+          item.id === productId
+            ? { ...item, quantity: item.quantity - 1 }
+            : item
+        )
+        .filter((item) => item.quantity > 0)
+    );
+  };
 
   return (
-    <div
-      className="absolute right-0  w-72 pb-2 bg-gradient-to-r from-green-400 to-yellow-400 shadow-lg rounded-lg p-6 border border-gray-300 opacity-1 z-8"
-    >
-      {uniqueItems.length > 0 ? (
-        <div>
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Cart Items</h2>
-          {uniqueItems.map((item, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between border-b py-2 text-gray-800"
-            >
-              {/* Product Image */}
-              <img
-                src={item.image}
-                alt={item.title}
-                className="w-10 h-10 object-cover rounded-md mr-2"
-              />
-              <div className="flex-1 ml-2">
-                <span className="font-medium">{item.title}</span>
-                <div className="flex justify-between">
-                  <span className="font-medium">${item.price.toFixed(2)}</span>
-                  <span>Qty: {item.quantity}</span>
+    <div>
+      {/* Cart Icon */}
+      <div className="fixed top-4 right-4">
+        <button onClick={() => setCartVisible(!isCartVisible)} className="relative">
+          <AiOutlineShoppingCart size={30} />
+          {cart.length > 0 && (
+            <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs px-2 py-0.5">
+              {cart.reduce((total, item) => total + item.quantity, 0)}
+            </span>
+          )}
+        </button>
+      </div>
+
+      {/* Cart Panel */}
+      {isCartVisible && (
+        <div className="fixed top-0 right-0 h-full bg-gray-100 shadow-lg p-4 w-72 z-50">
+          <button
+            onClick={() => setCartVisible(false)}
+            className="text-red-500 text-lg mb-4"
+          >
+            Close
+          </button>
+          <div>
+            <h2 className="text-xl font-semibold mb-4">Your Cart</h2>
+            {cart.length > 0 ? (
+              cart.map((item) => (
+                <div
+                  key={item.id}
+                  className="flex items-center justify-between border-b pb-2 mb-2"
+                >
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-12 h-12 object-cover rounded-md"
+                  />
+                  <div className="flex-1 ml-4">
+                    <h3 className="font-medium">{item.title}</h3>
+                    <p className="text-sm text-gray-600">${item.price}</p>
+                    <p className="text-sm text-gray-600">Qty: {item.quantity}</p>
+                  </div>
+                  <button
+                    onClick={() => removeFromCart(item.id)}
+                    className="text-red-500 text-sm"
+                  >
+                    Remove
+                  </button>
                 </div>
-              </div>
-            </div>
-          ))}
+              ))
+            ) : (
+              <p className="text-gray-600">Your cart is empty.</p>
+            )}
+          </div>
         </div>
-      ) : (
-        <p className="text-gray-500 text-center">Your cart is empty</p>
       )}
     </div>
   );
-}
+};
 
 export default Cart;
