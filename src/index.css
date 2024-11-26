@@ -38,29 +38,7 @@ height:400px;
     padding-top: 20px;
 
 }
-sup{
-    background-color: #ff6f61;
-    border: 1px solid #fff;
-    border-radius: 50%;
-    align-items: center;
-    background-color: #ff6f61;
-    border: 1px solid #fff;
-    border-radius: 50%;
-    color: #fff;
-    content: attr(data-cart-items);
-    display: flex
-;
-    font-size: 11px;
-    font-weight: 500;
-    height: 19px;
-    justify-content: center;
-    position: absolute;
-   
-    top: 8px;
-  margin-left: 8px;
-    width: 19px;
-    
-}
+
 #arr
 {
     padding-left: 10px;
