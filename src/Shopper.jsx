@@ -4,7 +4,8 @@ import { FaTruck, FaUndo, FaLock, FaShoppingBag } from "react-icons/fa";
 import Time from './Time.jsx';
 import Reviws from './Reviws.jsx';
 import Gallery from './Gallery.jsx';
-
+import Footer from './public/Footer.jsx';
+import App from './App.jsx';
 import Grid from './Grid.jsx';
 import Wmk from './Wmk.jsx';
 
